@@ -1,0 +1,38 @@
+services:
+  pstg:
+    image: postgres:16-alpine
+    container_name: pstg
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=gescol
+      - POSTGRES_USER=gescol
+      - POSTGRES_DB=gescol
+    ports:
+      - "5432:5432"
+    volumes:
+      - gescol-data:/var/lib/postgresql/data
+    networks:
+      - gescol-network
+
+  gescol-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: gescol-backend
+    restart: always
+    ports:
+      - "3001:3001"
+    volumes:
+      - .:/home/app
+      - /home/app/node_modules
+    depends_on:
+      - pstg
+    networks:
+      - gescol-network
+
+networks:
+  gescol-network:
+    driver: bridge
+
+volumes:
+  gescol-data:
