@@ -5,27 +5,36 @@
   "main": "app.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon ./src/app"
+    "dev": "nodemon ./src/app.ts",
+    "build": "tsc -p .",
+    "start": "node dist/app.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "knyrdev",
   "license": "ISC",
-  "type": "commonjs",
   "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "node-dependency-injection": "^3.2.4",
     "pg": "^8.16.3",
     "pg-hstore": "^2.3.4",
+    "reflect-metadata": "^0.2.2",
     "sequelize": "^6.37.7"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cookie-parser": "^1.4.10",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.5",
-    "nodemon": "^3.1.10",
-    "standard": "^17.1.2"
-  },
-  "eslintConfig": {
-    "extends": "standard"
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^24.10.1",
+    "@types/sequelize": "^4.28.20",
+    "nodemon": "^3.1.11",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
   }
 }

@@ -1,16 +1,15 @@
-import { readdirSync } from "fs";
+import { readdirSync } from "node:fs";
 import express, { Router } from "express";
 const router: Router = Router();
 
 const PATH_ROUTES = __dirname;
 
 function removeExtension(fileName: string): string {
-    const cleanFileName = <string>fileName.split(".").shift();
+    const cleanFileName = fileName.split(".").shift() as string;
     return cleanFileName;
 }
 
 /**
- *
  * @param file tracks.ts
  */
 function loadRouter(file: string): void {
