@@ -5,9 +5,15 @@
 .env.development.local
 .env.test.local
 .env.production.local
-./db.sql
+/node_modules
+/.pnp
+.pnp.js
+/.next
+/out
+/.db.sql
+db.sql
 
-./docker-compose.yml
+docker-compose.yml
 Dockerfile
 Dockerfile.dev
 Dockerfile.production

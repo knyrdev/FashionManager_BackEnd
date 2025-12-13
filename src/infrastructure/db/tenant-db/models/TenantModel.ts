@@ -11,6 +11,8 @@ export class TenantModel extends Model {
     public db_pass!: string;
     public db_dialect!: string;
     public db_sync!: boolean;
+    public created_at!: Date;
+    public updated_at!: Date;
 }
 
 TenantModel.init(
@@ -52,13 +54,23 @@ TenantModel.init(
             type: DataTypes.BOOLEAN,
             allowNull: false,
             defaultValue: false
+        },
+        created_at: {
+            type: DataTypes.DATE,
+            allowNull: false,
+            defaultValue: DataTypes.NOW
+        },
+        updated_at: {
+            type: DataTypes.DATE,
+            allowNull: false,
+            defaultValue: DataTypes.NOW
         }
     },
     {
         sequelize,
         tableName: 'tenants',
         modelName: 'Tenant',
-        timestamps: true
+        timestamps: false
     }
 );
 

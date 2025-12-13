@@ -1,12 +1,12 @@
-import { ContainerBuilder } from "node-dependency-injection";
+import { ContainerBuilder, Reference } from "node-dependency-injection";
 
 import { SequelizeUserRepository } from "../db/sequelize-pg/repositories/SequelizeUserRepository";
 
-export function RegisterUser(container: ContainerBuilder): void {
+export function RegisterUser(container: ContainerBuilder): ContainerBuilder {
     // Registrar UserRepository
     container
         .register('user.repository', SequelizeUserRepository)
-        .addArgument('@TenantConnectionManager');
-
+        .addArgument(new Reference('TenantConnectionManager'));
+    return container;
 }
 

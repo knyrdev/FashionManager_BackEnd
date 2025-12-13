@@ -20,10 +20,10 @@ export const sequelize = new Sequelize(dbName, dbUser, dbPassword, {
 export const connectSequelizeDB = async () => {
     try {
         await sequelize.authenticate();
-        console.log('Database connected successfully.');
+        console.log('Database connected successfully on port: ' + dbPort);
         if(dbSync === 'true') {
             await sequelize.sync({ force: false });
-            console.log('Database synchronized successfully.');
+            console.log('Database synchronized successfully');
         }
     } catch (error) {
         console.error('Unable to connect to the database:', error);

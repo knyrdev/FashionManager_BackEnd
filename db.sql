@@ -46,8 +46,6 @@ CREATE TABLE users (
   id BIGSERIAL PRIMARY KEY,
   personal_id BIGINT UNIQUE NOT NULL,
   role_id BIGINT NOT NULL,
-  username VARCHAR(50) UNIQUE NOT NULL,
-  password VARCHAR(255) NOT NULL, -- Usar un tipo de datos apropiado para un hash
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT fk_users_personal_id FOREIGN KEY (personal_id) REFERENCES personnel(id),
@@ -61,7 +59,7 @@ CREATE TABLE audit_logs (
   table_name VARCHAR(50) NOT NULL,
   record_id VARCHAR(50) NOT NULL,
   action_type VARCHAR(10) NOT NULL,
-  old_data JSONB, -- Usar JSONB para mejor rendimiento en PostgreSQL
+  old_data JSONB,
   new_data JSONB,
   logged_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT fk_audit_logs_user_id FOREIGN KEY (user_id) REFERENCES users(id)
@@ -100,17 +98,6 @@ CREATE TABLE clients (
   CONSTRAINT fk_clients_entity_id FOREIGN KEY (entity_id) REFERENCES entities(id)
 );
 
--- Tabla discounts
-CREATE TABLE discounts (
-  id BIGSERIAL PRIMARY KEY,
-  name VARCHAR(100) NOT NULL,
-  percentage DECIMAL(5, 2) NOT NULL,
-  start_date TIMESTAMP WITH TIME ZONE NOT NULL,
-  end_date TIMESTAMP WITH TIME ZONE,
-  is_active BOOLEAN DEFAULT TRUE NOT NULL,
-  applie_to VARCHAR(50) -- Ej. 'ALL', 'GARMENT', 'BRAND'
-);
-
 -- Tabla sales
 CREATE TABLE sales (
   id VARCHAR(50) PRIMARY KEY, -- Se asume un ID no secuencial
@@ -143,8 +130,8 @@ CREATE TABLE at_asides (
   user_id BIGINT NOT NULL,
   sale_id VARCHAR(50), -- Puede estar NULL hasta que se complete la venta
   client_id BIGINT NOT NULL,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   status VARCHAR(20) NOT NULL, -- Ej. 'PENDING', 'COMPLETE', 'CANCELLED'
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT fk_at_asides_user_id FOREIGN KEY (user_id) REFERENCES users(id),
   CONSTRAINT fk_at_asides_sale_id FOREIGN KEY (sale_id) REFERENCES sales(id),
   CONSTRAINT fk_at_asides_client_id FOREIGN KEY (client_id) REFERENCES clients(id)
@@ -256,7 +243,7 @@ CREATE TABLE returns (
   payment_method_id BIGINT, -- Se agregará FK más adelante, después de payment_methods
   status BOOLEAN DEFAULT FALSE NOT NULL,
   return_date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-  craeted_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP, -- Corregir nombre de columna
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP, -- Corregir nombre de columna
   CONSTRAINT fk_returns_user_id FOREIGN KEY (user_id) REFERENCES users(id),
   CONSTRAINT fk_returns_sale_detail_id FOREIGN KEY (sale_detail_id) REFERENCES sale_details(id)
 );
@@ -289,7 +276,7 @@ CREATE TABLE coins (
   coin VARCHAR(50) NOT NULL,
   symbol CHAR(3) NOT NULL,
   is_reference_currency BOOLEAN DEFAULT FALSE NOT NULL
-);
+);  
 
 -- Tabla payment_methods
 CREATE TABLE payment_methods (
@@ -367,7 +354,7 @@ CREATE TABLE tags (
 );
 
 -- Tabla hashtag
-CREATE TABLE hashtag (
+CREATE TABLE hashtags (
   variant_id VARCHAR(50) NOT NULL,
   tag_id BIGINT NOT NULL,
   PRIMARY KEY (variant_id, tag_id),
@@ -404,4 +391,15 @@ CREATE TABLE discount_target (
   target_id VARCHAR(50) NOT NULL,
   PRIMARY KEY (discount_id, target_type, target_id),
   CONSTRAINT fk_discount_target_discount_id FOREIGN KEY (discount_id) REFERENCES discounts(id)
+);
+
+-- Tabla discounts
+CREATE TABLE discounts (
+  id BIGSERIAL PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  percentage DECIMAL(5, 2) NOT NULL,
+  start_date TIMESTAMP WITH TIME ZONE NOT NULL,
+  end_date TIMESTAMP WITH TIME ZONE,
+  is_active BOOLEAN DEFAULT TRUE NOT NULL,
+  applie_to VARCHAR(50) -- Ej. 'ALL', 'GARMENT', 'BRAND'
 );

@@ -3,14 +3,14 @@ import { ContainerBuilder } from 'node-dependency-injection';
 import * as path from 'path';
 import * as fs from 'fs';
 
-type RegisterFunction = (container: ContainerBuilder) => void;
+type RegisterFunction = (container: ContainerBuilder) => ContainerBuilder;
 
 /**
  * Crea, configura y compila el Container de Inyección de Dependencias.
  * @returns Una promesa que resuelve con el ContainerBuilder compilado.
 */
 export async function createContainer(): Promise<ContainerBuilder>{
-  const container = new ContainerBuilder();
+  let container = new ContainerBuilder();
   const diDir = __dirname;
 
   console.log('Loading dynamic records for the dependency injection container');
@@ -18,7 +18,7 @@ export async function createContainer(): Promise<ContainerBuilder>{
 
   for (const file of files) {
     // Filtrar solo archivos TypeScript/JavaScript (excluyendo este archivo)
-    if (file === 'container.ts' || !/\.t|j-s$/.test(file)) {
+    if (file === 'container.ts' || !/\.(t|j)s$/.test(file)) {
       continue;
     }
     // Determinar el nombre esperado de la función
@@ -32,7 +32,7 @@ export async function createContainer(): Promise<ContainerBuilder>{
 
         if (typeof registerFn === 'function') {
             console.log(`🔌 Ejecutando función de registro: ${functionName} en ${file}`);
-            registerFn(container); // <--- Ejecución de la lógica de registro
+            container = registerFn(container); // <--- Ejecución de la lógica de registro
         } else {
             console.warn(`⚠️ Archivo ${file} no exporta una función llamada '${functionName}'.`);
         }

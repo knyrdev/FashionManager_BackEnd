@@ -1,6 +1,6 @@
-import { Tenant } from "../../../domain/tenant/Tenant";
-import { TenantRepository } from "../../../domain/tenant/TenantRepository";
-import { TenantModel } from "./TenantModel";
+import { Tenant } from "../../../../domain/services/tenancy/tenants/Tenant";
+import { TenantRepository } from "../../../../domain/services/tenancy/tenants/TenantRepository";
+import { TenantModel } from "../models/TenantModel";
 
 export class SequelizeTenantRepository implements TenantRepository {
     async create(tenant: Tenant): Promise<void> {
@@ -18,25 +18,9 @@ export class SequelizeTenantRepository implements TenantRepository {
     }
 
     async findById(id: string): Promise<Tenant | null> {
-        const tenantModel = await TenantModel.findByPk(id);
+        const tenantModel = await TenantModel.findOne({ where: { id: id } });
         if (!tenantModel) return null;
         return this.toDomain(tenantModel);
-    }
-
-    async findByDbName(dbname: string): Promise<Tenant | null> {
-        const tenantModel = await TenantModel.findOne({ where: { db_name: dbname } });
-        if (!tenantModel) return null;
-        return this.toDomain(tenantModel);
-    }
-
-    async findByDbStatus(status: boolean): Promise<Tenant[]> {
-        const tenantModels = await TenantModel.findAll({ where: { status: status } });
-        return tenantModels.map(model => this.toDomain(model));
-    }
-
-    async findAll(): Promise<Tenant[]> {
-        const tenantModels = await TenantModel.findAll();
-        return tenantModels.map(model => this.toDomain(model));
     }
 
     async update(tenant: Tenant): Promise<void> {
@@ -48,7 +32,8 @@ export class SequelizeTenantRepository implements TenantRepository {
             db_user: tenant.dbUser,
             db_pass: tenant.dbPass,
             db_dialect: tenant.dbDialect,
-            db_sync: tenant.dbSync
+            db_sync: tenant.dbSync,
+            update_at: new Date()
         }, {
             where: { id: tenant.id }
         });
@@ -64,7 +49,9 @@ export class SequelizeTenantRepository implements TenantRepository {
             model.db_user,
             model.db_pass,
             model.db_dialect,
-            model.db_sync
+            model.db_sync,
+            model.created_at,
+            model.updated_at
         );
     }
 }

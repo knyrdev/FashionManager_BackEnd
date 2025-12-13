@@ -1,15 +1,15 @@
-import { ContainerBuilder } from 'node-dependency-injection';
+import { ContainerBuilder, Reference } from 'node-dependency-injection';
 
 import { TenantConnectionManager } from '../tenancy/TenantConnectionManager';
-import { SequelizeTenantRepository } from '../db/tenant-db/SequelizeTenantRepository';
-import { TenantMiddleware } from '../tenancy/TenantMiddelware';
+import { SequelizeTenantRepository } from '../db/tenant-db/repositories/SequelizeTenantRepository';
+import { TenantMiddleware } from '../http/middelware/TenantMiddelware';
 
 import { DB_DIALECT, DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT, DB_LOGGING,DB_SYNC, DB_USER } from '../../config';
 
-export function RegisterTenancy(container: ContainerBuilder): void{
+export function RegisterTenancy(container: ContainerBuilder): ContainerBuilder{
     // Configuración global de Sequelize
     const globalConfig = {
-        dbName: DB_NAME,
+        dbName: DB_NAME, 
         dbUser: DB_USER,
         dbPass: DB_PASSWORD,
         host: DB_HOST,
@@ -33,5 +33,7 @@ export function RegisterTenancy(container: ContainerBuilder): void{
     // Registrar TenantMiddleware
     container
         .register('TenantMiddleware', TenantMiddleware)
-        .addArgument('@TenantRepository');
+        .addArgument(new Reference('TenantRepository'));
+
+    return container;
 }

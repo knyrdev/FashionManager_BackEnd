@@ -1,4 +1,4 @@
-import { Tenant } from '../../domain/tenant/Tenant';
+import { Tenant } from '../../domain/services/tenancy/tenants/Tenant';
 
 import { AsyncLocalStorage } from 'node:async_hooks';
 

@@ -1,5 +1,5 @@
-import { User } from "../../../../domain/user/User";
-import { UserRepository } from "../../../../domain/user/UserRepository";
+import { User } from "../../../../domain/entities/user/User";
+import { UserRepository } from "../../../../domain/entities/user/UserRepository";
 import { UserModel } from "../model/UserModel";
 import { TenantConnectionManager } from "../../../tenancy/TenantConnectionManager";
 
@@ -48,7 +48,7 @@ export class SequelizeUserRepository implements UserRepository {
       user.username,
       user.password
     );
-  }
+  } 
 
   async findById(id: number): Promise<User | null> {
     const Model = this.getModel();
