@@ -4,25 +4,33 @@
   "description": "",
   "main": "/src/app.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon ./src/app.ts",
     "build": "tsc -p .",
-    "start": "node dist/app.js"
+    "start": "node -r module-alias/register dist/index.js",
+    "lint": "eslint . --ext .ts"
   },
   "keywords": [],
   "author": "knyr.dev",
   "license": "ISC",
+  "_moduleAliases": {
+    "@tenancy_management": "src/context/tenancy_management",
+    "@bussines_core": "src/context/bussines_core",
+    "@shared": "src/context/shared"
+  },
   "dependencies": {
     "bcryptjs": "3.0.3",
     "cors": "2.8.5",
     "dotenv": "17.2.3",
     "express": "5.1.0",
     "jsonwebtoken": "9.0.2",
+    "lru-cache": "^11.2.4",
+    "module-alias": "^2.2.3",
     "node-dependency-injection": "3.2.4",
     "pg": "8.16.3",
     "pg-hstore": "2.3.4",
     "reflect-metadata": "0.2.2",
-    "sequelize": "6.37.7"
+    "sequelize": "6.37.7",
+    "zod": "^4.2.1"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
@@ -34,6 +42,8 @@
     "@types/sequelize": "^4.28.20",
     "nodemon": "^3.1.11",
     "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.9.3"
   }
 }

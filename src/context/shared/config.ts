@@ -1,0 +1,25 @@
+import "dotenv/config"
+export const {
+    PORT,
+    SALT_ROUNDS,
+
+    JWT_SECRET = "",
+    JWT_DAYS_EXPIRATION,
+    JWT_HOURS_EXPIRATION,
+    JWT_MINUTES_EXPIRATION,
+
+    JWT_REFRESH_SECRET ="",
+    JWT_REFRESH_DAYS_EXPIRATION,
+    JWT_REFRESH_HOURS_EXPIRATION,
+    JWT_REFRESH_MINUTES_EXPIRATION,
+
+    TYPE_ORM,
+    DB_DIALECT,
+    DB_PORT,
+    DB_HOST,
+    DB_NAME,
+    DB_USER,
+    DB_PASSWORD,
+    DB_LOGGING,
+    DB_SYNC,
+} = process.env; 
